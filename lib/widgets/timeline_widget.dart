@@ -20,7 +20,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
           (DateTime.now().hour * 60 + DateTime.now().minute).toDouble() -
               MediaQuery.of(context).size.width / 2,
           duration: const Duration(milliseconds: 500),
-          curve: Curves.easeInBack);
+          curve: Curves.easeIn);
     });
     super.initState();
   }
