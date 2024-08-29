@@ -131,91 +131,96 @@ class _NotificationWidgetState extends State<NotificationWidget> with TickerProv
         double innerContainerWidth = collapseController.value > 0
             ? _collapseAnimation.value
             : _expansionAnimation.value + _shadowAnimation.value * 2;
-        return Positioned(
-          left: leftPosition,
-          top: _topPositionAnimation.value - _shadowAnimation.value,
-          child: Opacity(
-            opacity: opacityValue,
-            child: GestureDetector(
-              onHorizontalDragUpdate: (details) {
-                if (details.delta.dx.isNegative) {
-                  _shadowBlinkingController.stop();
-                  collapseController.forward();
-                }
-              },
-              child: Stack(
-                alignment: Alignment.center,
-                clipBehavior: Clip.hardEdge,
-                children: [
-                  Container(
-                    width: containerWidth,
-                    height: containerHeight,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50.w(context)),
-                      color: Colors.red.withOpacity(0.2),
-                    ),
-                  ),
-                  Container(
-                    clipBehavior: Clip.hardEdge,
-                    padding: EdgeInsets.all(10.w(context)),
-                    alignment: Alignment.center,
-                    width: innerContainerWidth,
-                    height: 50.w(context),
-                    decoration: BoxDecoration(
-                      boxShadow: const [
-                        BoxShadow(color: Colors.black, spreadRadius: 1, blurRadius: 6)
-                      ],
-                      borderRadius: BorderRadius.circular(25.w(context)),
-                      color: Colors.red,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
+        return _controller.value > 0
+            ? Positioned(
+                left: leftPosition,
+                top: _topPositionAnimation.value - _shadowAnimation.value,
+                child: Opacity(
+                  opacity: opacityValue,
+                  child: GestureDetector(
+                    onHorizontalDragUpdate: (details) {
+                      if (details.delta.dx.isNegative) {
+                        _shadowBlinkingController.stop();
+                        collapseController.forward();
+                      }
+                    },
+                    child: Stack(
+                      alignment: Alignment.center,
+                      clipBehavior: Clip.hardEdge,
                       children: [
-                        if (_expansionAnimation.value >= 100 && _collapseAnimation.value > 180)
-                          const Icon(
-                            Icons.local_fire_department_outlined,
-                            color: Colors.white,
+                        Container(
+                          width: containerWidth,
+                          height: containerHeight,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50.w(context)),
+                            color: Colors.red.withOpacity(0.2),
                           ),
-                        if (_expansionAnimation.value >= 180 && _collapseAnimation.value > 130)
-                          ConstrainedBox(
-                            constraints: BoxConstraints(
-                              maxWidth: 110.w(context),
-                            ),
-                            child: RichText(
-                              maxLines: 2,
-                              overflow: TextOverflow.fade,
-                              text: const TextSpan(
-                                text: 'You are too close to the daily limit.',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 8,
+                        ),
+                        Container(
+                          clipBehavior: Clip.hardEdge,
+                          padding: EdgeInsets.all(10.w(context)),
+                          alignment: Alignment.center,
+                          width: innerContainerWidth,
+                          height: 50.w(context),
+                          decoration: BoxDecoration(
+                            boxShadow: const [
+                              BoxShadow(color: Colors.black, spreadRadius: 1, blurRadius: 6)
+                            ],
+                            borderRadius: BorderRadius.circular(25.w(context)),
+                            color: Colors.red,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (_expansionAnimation.value >= 100 &&
+                                  _collapseAnimation.value > 180)
+                                const Icon(
+                                  Icons.local_fire_department_outlined,
+                                  color: Colors.white,
                                 ),
-                                children: [
-                                  TextSpan(
-                                    text: ' Only \$5.34 left',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 8,
+                              if (_expansionAnimation.value >= 180 &&
+                                  _collapseAnimation.value > 130)
+                                ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxWidth: 110.w(context),
+                                  ),
+                                  child: RichText(
+                                    maxLines: 2,
+                                    overflow: TextOverflow.fade,
+                                    text: const TextSpan(
+                                      text: 'You are too close to the daily limit.',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 8,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: ' Only \$5.34 left',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 8,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
+                                ),
+                              if (_expansionAnimation.value >= 100 &&
+                                  _collapseAnimation.value > 180)
+                                Icon(
+                                  Icons.close,
+                                  color: Colors.black.withOpacity(0.1),
+                                )
+                            ],
                           ),
-                        if (_expansionAnimation.value >= 100 && _collapseAnimation.value > 180)
-                          Icon(
-                            Icons.close,
-                            color: Colors.black.withOpacity(0.1),
-                          )
+                        ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        );
+                ),
+              )
+            : const SizedBox();
       },
     );
   }
